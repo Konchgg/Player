@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=3 uid="uid://cdvxpw0smn3kf"]
+
+[ext_resource type="Script" path="res://Asets/Scrypt/player.gd" id="1_k2r5o"]
+[ext_resource type="Texture2D" uid="uid://oe75bi8sva2l" path="res://Asets/Art/IDEL/idle_down.png" id="2_ecg2n"]
+[ext_resource type="Script" path="res://Asets/FSM/fsm.gd" id="3_gfl08"]
+[ext_resource type="Script" path="res://Asets/FSM/idle.gd" id="4_wdyhu"]
+[ext_resource type="Script" path="res://Asets/FSM/Run.gd" id="5_8a8dm"]
+[ext_resource type="Script" path="res://Asets/FSM/Death.gd" id="6_we71o"]
+[ext_resource type="SpriteFrames" uid="uid://dvw8ji5k5s8dr" path="res://Asets/PlayerAnimations/AnimationSprite_frames.tres" id="7_n6l6x"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tsxte"]
+radius = 5.27473
+height = 24.5106
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(64, 87)
+script = ExtResource("1_k2r5o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-0.50008, -5)
+scale = Vector2(1.89583, 1.46875)
+texture = ExtResource("2_ecg2n")
+hframes = 8
+
+[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
+position = Vector2(2, 8)
+ignore_rotation = false
+zoom = Vector2(1.7, 1.7)
+position_smoothing_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -6)
+scale = Vector2(1.89583, 1.46875)
+shape = SubResource("CapsuleShape2D_tsxte")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -179.0
+offset_top = -103.0
+offset_right = -139.0
+offset_bottom = -63.0
+metadata/_edit_use_anchors_ = true
+
+[node name="l_state" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 13.0
+offset_right = 36.0
+offset_bottom = 36.0
+
+[node name="FSM" type="Node" parent="."]
+script = ExtResource("3_gfl08")
+start_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="FSM"]
+script = ExtResource("4_wdyhu")
+
+[node name="Run" type="Node" parent="FSM"]
+script = ExtResource("5_8a8dm")
+
+[node name="Death" type="Node" parent="FSM"]
+script = ExtResource("6_we71o")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, -5)
+scale = Vector2(1.43229, 1.4375)
+sprite_frames = ExtResource("7_n6l6x")
+animation = &"runx"
+speed_scale = 2.0
